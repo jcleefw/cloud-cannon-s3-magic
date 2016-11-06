@@ -31,6 +31,13 @@ class Container {
             <label for="height">Height</label>
             <input type="text" id="image-height" placeholder="Auto"/>
           </fieldset>
+          <fieldset>
+            <label for="height">Alignment</label>
+            <select id="image-alignment">
+              <option value="center">Center</option>
+              <option value="left">Left</option>
+            </select>
+          </fieldset>
         </div>
         <div id="asset-list" class="magic-bar__asset-list"></div>
       </div>

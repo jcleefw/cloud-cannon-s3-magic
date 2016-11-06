@@ -4,6 +4,7 @@ class Image {
     this.image = image
     this.imageWidth = document.getElementById('image-width')
     this.imageHeight = document.getElementById('image-height')
+    this.imageAlignment = this.imageStyle(document.getElementById('image-alignment').value)
     this.outputUrl = this.buildOutputUrlOnLoad()
     this.s3Url = this.buildS3Url()
   }
@@ -63,13 +64,21 @@ class Image {
     scriptElem.parentNode.removeChild(scriptElem)
   }
 
+  imageStyle(alignment) {
+    if(alignment === 'center')
+      return 'margin: 0 auto'
+    else if(alignment === 'left')
+      return 'margin: 0'
+  }
+
   getScriptElem (imageString) {
 
     return `(function () {
        let iframeCKEDITOR = document.getElementById('editor-iframe').contentWindow.CKEDITOR
        let markdownEditor = iframeCKEDITOR.instances[CURRENT_CKEDITOR]
-       if(markdownEditor)
-         markdownEditor.insertHtml('<img src="${imageString}">')
+       if(markdownEditor){
+         markdownEditor.insertHtml('<img src="${imageString}" style="${this.imageAlignment}" />')
+       }
       else {
         let uploadStatusElem = document.querySelector('#ccs3-asset-status')
         uploadStatusElem.className += ' ccs3-asset-status--error ccs3-asset-status--active'
