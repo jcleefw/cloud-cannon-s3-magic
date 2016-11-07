@@ -18,6 +18,7 @@ class AssetList {
     this.assets = this.filterValidAssets()
     this.render(this.assets)
     this.setUpCopyAssetButton()
+    this.setUpDeleteAssetButton()
   }
 
   filterValidAssets() {
@@ -78,5 +79,40 @@ class AssetList {
         e.trigger.removeClass('active')
       }, 750)
     })
+  }
+
+  setUpDeleteAssetButton() {
+    const clipboard = new Clipboard('.btn-delete-asset', {
+      text: function(trigger) {
+        return trigger.getAttribute('data-delete-path');
+      }
+    })
+
+    clipboard.on('success', e => {
+      let confirmation = confirm('Are you sure you want to delete this image?')
+
+      const promises = []
+      const key = e.text.split(EXT_SETTINGS.outputBaseUrl)
+      let filename = key[key.length-1]
+
+      if(confirmation) {
+        promises.push(App.s3Service.delete(filename))
+      } else {
+        const statusService = new AssetStatusService()
+
+        statusService.showError(`Oops something wrong for ${filename} deletion !`)
+        this.submitUploadElem.removeClass('loading')
+      }
+      const assetStatusService = new AssetStatusService()
+      Promise.all(promises)
+        .then(this.onDeleteSuccess.bind(this))
+        .catch(assetStatusService.showError)
+    })
+  }
+
+  onDeleteSuccess() {
+    const statusService = new AssetStatusService()
+    statusService.showSuccess('Delete successful!')
+    this.fetchAssets()
   }
 }

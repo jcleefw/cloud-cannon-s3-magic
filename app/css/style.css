@@ -82,13 +82,22 @@
 
 .ccs3-btn--icon {
   border-radius: 0;
-  border-top-left-radius: 4px;
   cursor: pointer;
   background: white;
   padding: 5px 5px 0 5px;
   position: absolute;
+}
+
+.btn-copy-asset {
   bottom: 0;
   right: 0;
+  border-top-left-radius: 4px;
+}
+
+.btn-delete-asset {
+  bottom: 0;
+  left: 0;
+  border-top-right-radius: 4px;
 }
 
 .ccs3-btn--icon:focus {

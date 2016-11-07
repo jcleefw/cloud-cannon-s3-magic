@@ -46,6 +46,9 @@ class Image {
     return `
       <div class="magic-bar__asset-wrapper">
         <img src="${this.s3Url}" class="magic-bar__image" data-path="${this.outputUrl}">
+        <button class="ccs3-btn ccs3-btn--icon btn-delete-asset tooltip-bottom" data-delete-path="${this.outputUrl}">
+          <img src="${this.s3BaseUrl}/images/assets/trash.svg" />
+        </button>
         <button data-ccs3-tooltip="success" class="ccs3-btn ccs3-btn--icon btn-copy-asset tooltip-bottom" data-clipboard-text="${this.outputUrl}">
           <img src="${this.s3BaseUrl}/images/assets/clipboard.svg" />
         </button>
