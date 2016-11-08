@@ -33,6 +33,7 @@
       "./app/js/components/file.js",
       "./app/js/components/search.js",
       "./app/js/components/uploader.js",
+      "./app/js/components/deleter.js",
       "./app/js/app.js"
     ]
   }],

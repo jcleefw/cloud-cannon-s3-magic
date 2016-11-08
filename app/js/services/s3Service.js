@@ -39,16 +39,12 @@ class S3Service {
   }
 
   delete(key) {
-
     let filename = `${S3_IMAGES_PREFIX}${key}`
-
     return new Promise((resolve,reject) => {
       var params = {Key: filename, Bucket: EXT_SETTINGS.bucket}
 
       this.s3.deleteObject(params, (err, data) => {
-
         if(err) reject(err)
-
         resolve()
       })
     })
