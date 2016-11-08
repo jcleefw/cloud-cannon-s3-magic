@@ -4,6 +4,7 @@ class Deleter {
     this.assetList = assetList
     this.targetElement = ''
     this.deleteFilePath = ''
+    this.searchElem = document.querySelector('#ccs3-search-filter')
 
     document.addEventListener('click', this.onDeleteButtonClick.bind(this))
   }
@@ -44,11 +45,22 @@ class Deleter {
     Promise.all(promises)
       .then(() => {
         assetStatusService.showSuccess('Delete successful!')
-        this.assetList.fetchAssets()
+        this.renderAssetList()
       })
       .catch(() => {
         assetStatusService.showError('Oops, something wrong with the delete.')
       })
   }
 
+  renderAssetList() {
+    const removeIndex = this.assetList.assets.map(function(item) { return item.Key; }).indexOf(this.deleteFilePath)
+    this.assetList.assets.splice(removeIndex, 1)
+    const regex = new Search(this.assetList).buildRegex(this.searchElem.value)
+    this.assetList.render(this.assetList.assets.filter(asset => {
+      return asset.Key.match(regex)
+    }))
+  }
+
 }
+
+this.assetList.assets.map(function(item) { return item.Key; }).indexOf(this.deleteFilePath);
