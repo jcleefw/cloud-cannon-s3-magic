@@ -3,6 +3,7 @@ class Deleter {
   constructor(assetList) {
     this.assetList = assetList
     this.targetElement = ''
+    this.deleteFilePath = ''
 
     document.addEventListener('click', this.onDeleteButtonClick.bind(this))
   }
@@ -13,19 +14,30 @@ class Deleter {
     }
   }
 
-  confirmDeletion(targetImage) {
-    let confirmation = confirm('Are you sure you want to delete this image?')
+  confirmDeletion(targetElement) {
+    let confirmation = confirm('Are you sure you want to delete this?')
 
     if(confirmation) {
-      this.targetElement = targetImage.parentElement
-      this.deleteImage(targetImage.parentElement.getAttribute('data-delete-path'))
+      this.targetElement = targetElement.parentElement
+      this.deleteFilePath = this.getFilePath(targetElement.parentElement.getAttribute('data-delete-path'))
+      this.deleteFile()
     }
   }
 
-  deleteImage(imagePath) {
+  getFilePath(path) {
+    let pathArray = []
+    if(path.includes('.pdf')) {
+      pathArray = path.split('/pdf/')
+      return `${S3_PDF_PREFIX}/${pathArray[pathArray.length-1]}`
+    } else {
+      pathArray = path.split(EXT_SETTINGS.outputBaseUrl)
+      return `${S3_IMAGES_PREFIX}${pathArray[pathArray.length-1]}`
+    }
+  }
+
+  deleteFile(imagePath) {
     const promises = []
-    const key = imagePath.split(EXT_SETTINGS.outputBaseUrl)
-    let filename = key[key.length-1]
+    let filename = this.deleteFilePath
 
     promises.push(App.s3Service.delete(filename))
     const assetStatusService = new AssetStatusService()
@@ -35,7 +47,7 @@ class Deleter {
         this.assetList.fetchAssets()
       })
       .catch(() => {
-        assetStatusService.showError('Oops, something wrong with image deletion.')
+        assetStatusService.showError('Oops, something wrong with the delete.')
       })
   }
 
