@@ -4,7 +4,8 @@ class Image {
     this.image = image
     this.imageWidth = document.getElementById('image-width')
     this.imageHeight = document.getElementById('image-height')
-    this.imageAlignment = this.imageStyle(document.getElementById('image-alignment').value)
+    this.imageAlignmentCSS = this.imageStyle(document.getElementById('image-alignment').value)
+    this.imageAlignment = document.getElementById('image-alignment').value
     this.outputUrl = this.buildOutputUrlOnLoad()
     this.s3Url = this.buildS3Url()
   }
@@ -80,7 +81,7 @@ class Image {
        let iframeCKEDITOR = document.getElementById('editor-iframe').contentWindow.CKEDITOR
        let markdownEditor = iframeCKEDITOR.instances[CURRENT_CKEDITOR]
        if(markdownEditor){
-         markdownEditor.insertHtml('<img src="${imageString}" style="${this.imageAlignment}" />')
+         markdownEditor.insertHtml('<p class="image-${this.imageAlignment}"><img src="${imageString}" style="${this.imageAlignmentCSS}" /></p>')
        }
       else {
         let uploadStatusElem = document.querySelector('#ccs3-asset-status')
