@@ -7,6 +7,7 @@ class Deleter {
     this.searchElem = document.querySelector('#ccs3-search-filter')
 
     document.addEventListener('click', this.onDeleteButtonClick.bind(this))
+    this.assetList.assets.map(function(item) { return item.Key; }).indexOf(this.deleteFilePath);
   }
 
   onDeleteButtonClick(e) {
@@ -61,6 +62,9 @@ class Deleter {
     }))
   }
 
+
 }
 
-this.assetList.assets.map(function(item) { return item.Key; }).indexOf(this.deleteFilePath);
+
+
+

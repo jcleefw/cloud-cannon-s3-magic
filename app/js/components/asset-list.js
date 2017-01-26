@@ -53,13 +53,17 @@ class AssetList {
   }
 
   render(assets) {
-    const truncatedAssetList = assets.slice(0, this.maxCount)
+    let assetCount = 0
     const fileService = new FileService()
 
-    this.assetListElem.innerHTML = truncatedAssetList.map(asset => {
-      if (fileService.isImage(asset.Key)) {
-        return new Image(asset).render()
-      } else if (fileService.isPdf(asset.Key)) {
+    this.assetListElem.innerHTML = assets.map(asset => {
+      if (fileService.isImage(asset.Key) && assetCount < this.maxCount) {
+        console.log(asset.Key)
+        if(!asset.Key.includes("images/assets")) {
+          assetCount += 1
+          return new Image(asset).render()
+        }
+      } else if (fileService.isPdf(asset.Key) && assetCount < this.maxCount) {
         return new File(asset).render()
       }
     }).join('')
